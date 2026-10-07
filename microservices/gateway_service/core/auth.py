@@ -8,6 +8,8 @@ SECRET_KEY = "super-secret-key-change-in-production"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
+import nodwa
+
 security = HTTPBearer()
 
 # Шляхи які НЕ потребують токена
