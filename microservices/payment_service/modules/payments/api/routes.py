@@ -1,29 +1,30 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
-from sqlalchemy.orm import Session
 import uuid
 
-from core.database import get_db
-from ..application.service import PaymentService, PaymentCreateDTO
-from ..infrastructure.repository import PaymentRepository
-from ..infrastructure.user_client import get_user, UserNotFoundException
 import pybreaker
+from core.database import get_db
+from fastapi import APIRouter, Depends, HTTPException, Request
+from sqlalchemy.orm import Session
+
+from ..application.service import PaymentCreateDTO, PaymentService
+from ..infrastructure.repository import PaymentRepository
+from ..infrastructure.user_client import UserNotFoundException, get_user
 
 router = APIRouter(prefix="/payments", tags=["Payments"])
 
 
 @router.get("/")
-def list_payments(db: Session = Depends(get_db)):
+def list_payments(db: Session = Depends(get_db)):  # noqa: B008
     repo = PaymentRepository(db)
     return repo.get_all()
 
 
 @router.post("/", status_code=201)
-def create_payment(dto: PaymentCreateDTO, db: Session = Depends(get_db)):
+def create_payment(dto: PaymentCreateDTO, db: Session = Depends(get_db)):  # noqa: B008
     try:
         repo = PaymentRepository(db)
         service = PaymentService(repo)
         return service.create_payment(dto)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         raise HTTPException(status_code=400, detail=str(e))
 
 
@@ -58,7 +59,7 @@ def get_payment(user_id: int, request: Request):
             }
         )
 
-    except Exception:
+    except Exception:  # noqa: BLE001
         raise HTTPException(
             status_code=503,
             detail={

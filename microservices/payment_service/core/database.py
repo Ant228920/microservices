@@ -1,7 +1,7 @@
+from core.config import settings  # Імпортуємо наш конфіг із налаштуваннями
 from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from core.config import settings  # Імпортуємо наш конфіг із налаштуваннями
 
 SQLALCHEMY_DATABASE_URL = settings.database_url
 
@@ -22,5 +22,5 @@ def check_db_connection():
         with engine.connect() as connection:
             connection.execute(text("SELECT 1"))
         return True
-    except Exception:
+    except Exception:  # noqa: BLE001
         return False

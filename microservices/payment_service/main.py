@@ -1,12 +1,12 @@
-from fastapi import FastAPI
-from modules.payments.api.routes import router as payments_router
 import threading
+
 from consumer import start_payment_consumer
-from core.relay import relay
 
 # Додаємо імпорти для створення бази даних
-from core.database import engine, Base
-from modules.payments.infrastructure.models import PaymentTable, OutboxEventTable
+from core.database import Base, engine
+from core.relay import relay
+from fastapi import FastAPI
+from modules.payments.api.routes import router as payments_router
 
 # Цей рядок автоматично створить таблицю payments та outbox_events при запуску!
 Base.metadata.create_all(bind=engine)

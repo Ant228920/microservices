@@ -1,6 +1,11 @@
 import httpx
-from tenacity import retry, stop_after_attempt, wait_fixed, retry_if_exception_type, retry_if_not_exception_type
 import pybreaker
+from tenacity import (
+    retry,
+    retry_if_not_exception_type,
+    stop_after_attempt,
+    wait_fixed,
+)
 
 breaker = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=10)
 

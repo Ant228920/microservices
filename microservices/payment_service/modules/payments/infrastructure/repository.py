@@ -1,6 +1,6 @@
-from sqlalchemy.orm import Session
-from modules.payments.infrastructure.models import PaymentTable, OutboxEventTable
 from modules.payments.domain.models import Payment
+from modules.payments.infrastructure.models import OutboxEventTable, PaymentTable
+from sqlalchemy.orm import Session
 
 
 class PaymentRepository:

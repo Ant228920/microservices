@@ -1,10 +1,11 @@
-import pika
 import json
 import time
-from pika.exceptions import AMQPConnectionError
+
+import pika
 from core.config import settings
 from core.database import SessionLocal
 from modules.payments.infrastructure.models import PaymentTable
+from pika.exceptions import AMQPConnectionError
 
 
 def start_payment_consumer():
@@ -12,7 +13,7 @@ def start_payment_consumer():
     # 1. Ретрай-механізм підключення
     while not connection:
         try:
-            print(f"🔄 Payment Consumer: Спроба підключення до RabbitMQ...")
+            print("🔄 Payment Consumer: Спроба підключення до RabbitMQ...")
             connection = pika.BlockingConnection(
                 pika.ConnectionParameters(host=settings.rabbitmq_host, port=settings.rabbitmq_port)
             )
@@ -53,7 +54,8 @@ def start_payment_consumer():
             else:
                 print(f"❓ Платіж №{payment_id} не знайдено в базі")
 
-        except Exception as e:
+
+        except Exception as e:  # noqa: BLE001
             print(f"❌ Помилка обробки відповіді: {e}")
             db.rollback()
         finally:

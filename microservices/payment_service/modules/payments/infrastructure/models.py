@@ -1,7 +1,8 @@
-import uuid
 import datetime
-from sqlalchemy import Column, Integer, Float, String, Boolean, JSON, DateTime
+import uuid
+
 from core.database import Base
+from sqlalchemy import JSON, Boolean, Column, DateTime, Float, Integer, String
 
 
 class PaymentTable(Base):

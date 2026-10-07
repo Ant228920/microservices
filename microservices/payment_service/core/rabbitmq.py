@@ -1,7 +1,7 @@
-import pika
 import json
 import os
 
+import pika
 from core.config import settings
 
 RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "rabbitmq")

@@ -1,8 +1,9 @@
 import time
-from sqlalchemy.orm import Session
+
 from core.database import SessionLocal
-from modules.payments.infrastructure.models import OutboxEventTable
 from core.rabbitmq import publish_event
+from modules.payments.infrastructure.models import OutboxEventTable
+from sqlalchemy.orm import Session
 
 
 def relay():
@@ -28,11 +29,13 @@ def relay():
 
                     print(f"✅ Подія {event.id} успішно відправлена та позначена як is_processed=True!")
 
-                except Exception as e:
+
+                except Exception as e:  # noqa: BLE001
                     print(f"❌ Помилка відправки події {event.id} у RabbitMQ: {e}")
                     db.rollback()
 
-        except Exception as db_err:
+
+        except Exception as db_err:  # noqa: BLE001
             print(f"⚠️ Помилка доступу до БД у процесі Relay: {db_err}")
 
         finally:

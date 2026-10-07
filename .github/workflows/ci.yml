@@ -74,8 +74,9 @@ jobs:
       contents: read
       packages: write
     strategy:
+      fail-fast: false
       matrix:
-        service: [gateway_service, payment_service, user_service]
+        service: [ gateway_service, payment_service, user_service ]
 
     steps:
       - name: Checkout repository
