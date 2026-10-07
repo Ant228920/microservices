@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - micro_network
+
+  payment_service:
+    build:
+      context: ./payment_service
+      dockerfile: Dockerfile
+    container_name: payment_app
+    volumes:
+      - ./payment_service:/app
+    env_file:
+      - ./payment_service/.env_payment
+    ports:
+      - "8001:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      rabbitmq:
+        condition: service_started
+    networks:
+      - micro_network
+
+  user_service:
+    build:
+      context: ./user_service
+      dockerfile: Dockerfile
+    container_name: user_app
+    volumes:
+      - ./user_service:/app
+    env_file:
+      - ./user_service/.env_user
+    ports:
+      - "8002:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      rabbitmq:
+        condition: service_started
+    networks:
+      - micro_network
+
+  gateway_service:
+    build:
+      context: ./gateway_service
+      dockerfile: Dockerfile
+    container_name: gateway_app
+    env_file:
+      - ./gateway_service/.env_gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - user_service
+      - payment_service
+    networks:
+      - micro_network
+    restart: unless-stopped
+
+  # ── Observability ──────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - micro_network
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - micro_network
+    restart: unless-stopped
+
+networks:
+  micro_network:
+    driver: bridge

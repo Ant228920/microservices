@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-dotenv
+sqlalchemy
+pydantic-settings
+psycopg[binary]
+psycopg2-binary
+email-validator
+httpx
+pydantic[email]
+tenacity
+pybreaker
+pika

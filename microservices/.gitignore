@@ -1,0 +1,32 @@
+# ── Віртуальні середовища ──
+.venv/
+venv/
+env/
+
+# ── Змінні середовища (Безпека!) ──
+.env
+.env_*
+*.env
+
+# ── Кеш Python та тестів ──
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── Бази даних та Docker Volumes ──
+# Якщо ти будеш зберігати дані БД локально в папці проєкту
+*_data/
+*.sqlite3
+
+# ── Налаштування IDE ──
+.idea/
+.vscode/
+*.swp
+*.xml
+
+# ── Системні файли ──
+.DS_Store
+Thumbs.db
