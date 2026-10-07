@@ -1,11 +1,11 @@
 import asyncio
-import httpx
-from typing import Any, Optional
+from typing import Any
 
+import httpx
 from core.config import settings
 
 
-async def safe_get(client: httpx.AsyncClient, url: str) -> Optional[dict]:
+async def safe_get(client: httpx.AsyncClient, url: str) -> dict | None:
     """
     Perform a GET request and return parsed JSON or None on any failure.
     Never raises — caller decides how to handle a None result.
@@ -39,7 +39,7 @@ async def safe_proxy(
             )
             try:
                 data = resp.json()
-            except Exception:
+            except Exception:  # noqa: BLE001
                 data = {"detail": resp.text}
             return resp.status_code, data
         except httpx.RequestError as exc:

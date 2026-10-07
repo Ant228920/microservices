@@ -1,8 +1,9 @@
-import pika
 import json
 import time
-from pika.exceptions import AMQPConnectionError
+
+import pika
 from core.config import settings
+from pika.exceptions import AMQPConnectionError
 
 
 def start_consumer():
@@ -59,7 +60,8 @@ def start_consumer():
             print(f"📤 Відповідь [{status}] надіслана в чергу {reply_queue}")
             print("!" * 60 + "\n")
 
-        except Exception as e:
+
+        except Exception as e:  # noqa: BLE001
             print(f"❌ Помилка в Consumer: {e}")
 
     channel.basic_consume(

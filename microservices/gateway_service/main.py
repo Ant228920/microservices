@@ -1,15 +1,14 @@
 import uvicorn
+from core.config import settings
+from core.metrics import metrics_endpoint
+from core.middleware import GatewayMiddleware
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from core.config import settings
-from core.middleware import GatewayMiddleware
-from core.metrics import metrics_endpoint
+from fastapi.openapi.utils import get_openapi
+from fastapi.security import HTTPBearer
+from modules.auth.api.routes import router as auth_router
 from modules.gateway.api.routes import router as gateway_router
 from modules.proxy.api.routes import router as proxy_router
-from modules.auth.api.routes import router as auth_router
-from fastapi.security import HTTPBearer
-from fastapi.openapi.utils import get_openapi
 
 security = HTTPBearer()
 

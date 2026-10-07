@@ -1,4 +1,5 @@
 import os
+
 from fastapi.testclient import TestClient
 
 os.environ["USER_SERVICE_URL"] = "http://fake-user-service"

@@ -1,12 +1,12 @@
-import time
 import logging
+import time
+
+from core.auth import PUBLIC_PATHS, decode_token, extract_token
+from core.metrics import ERROR_COUNT, REQUEST_COUNT, REQUEST_LATENCY
+from core.rate_limiter import check_rate_limit
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
-
-from core.auth import PUBLIC_PATHS, decode_token, extract_token
-from core.rate_limiter import check_rate_limit
-from core.metrics import REQUEST_COUNT, REQUEST_LATENCY, ERROR_COUNT
 
 logging.basicConfig(
     level=logging.INFO,
@@ -25,7 +25,7 @@ class GatewayMiddleware(BaseHTTPMiddleware):
         # ── 1. Rate Limiting ──────────────────────────────
         try:
             check_rate_limit(client_ip)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             logger.warning(f"[RATE LIMIT] {client_ip} → {method} {path}")
             ERROR_COUNT.labels(method=method, path=path, status_code=429).inc()
             REQUEST_COUNT.labels(method=method, path=path, status_code=429).inc()
@@ -45,7 +45,7 @@ class GatewayMiddleware(BaseHTTPMiddleware):
                 )
             try:
                 user_payload = decode_token(token)
-            except Exception:
+            except Exception:  # noqa: BLE001
                 logger.warning(f"[AUTH] Invalid token → {method} {path} from {client_ip}")
                 ERROR_COUNT.labels(method=method, path=path, status_code=401).inc()
                 REQUEST_COUNT.labels(method=method, path=path, status_code=401).inc()

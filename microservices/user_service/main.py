@@ -1,7 +1,8 @@
+import threading
+
+from consumer import start_consumer
 from fastapi import FastAPI
 from modules.users.api.routes import router as users_router
-import threading
-from consumer import start_consumer
 
 # Якщо у тебе в user_service теж є своя база даних (наприклад, таблиця Users),
 # то розкоментуй ці рядки, щоб вони теж створювалися автоматично:

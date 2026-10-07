@@ -1,8 +1,9 @@
 import asyncio
+
 import httpx
-from fastapi import APIRouter, HTTPException, Path
 from core.config import settings
 from core.http_client import safe_get
+from fastapi import APIRouter, HTTPException, Path
 
 router = APIRouter()
 

@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Request
-from fastapi.responses import JSONResponse
 from core.config import settings
 from core.http_client import safe_proxy
+from fastapi import APIRouter, Request
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 

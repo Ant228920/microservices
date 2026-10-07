@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
-from .models import UserTable
+
 from ..domain.models import User
+from .models import UserTable
 
 
 class UserRepository:
