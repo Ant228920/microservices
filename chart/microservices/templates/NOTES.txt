@@ -1,0 +1,15 @@
+Реліз {{ .Release.Name }} встановлено в namespace {{ .Release.Namespace }}.
+
+Щоб відкрити застосунок, виконайте:
+
+  kubectl port-forward svc/{{ include "microservices.fullname" . }}-gateway 8080:{{ .Values.gateway.service.port }} -n {{ .Release.Namespace }}
+
+і відкрийте у браузері: http://localhost:8080/docs
+{{- if .Values.ingress.enabled }}
+
+Ingress увімкнено. Запустіть "minikube tunnel" і відкрийте http://127.0.0.1/docs
+{{- end }}
+
+Стан подів:
+
+  kubectl get pods -n {{ .Release.Namespace }}

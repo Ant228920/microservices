@@ -1,0 +1,6 @@
+apiVersion: v2
+name: microservices
+description: Helm chart for the microservices lab app (gateway, user, payment, PostgreSQL, RabbitMQ)
+type: application
+version: 0.1.0
+appVersion: "865266f"

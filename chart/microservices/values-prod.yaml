@@ -1,0 +1,39 @@
+# Prod: більше реплік і ресурсів, інший тег образу, Ingress увімкнено.
+# Паролі НЕ зберігаються у файлі: передаються через --set (див. README).
+secret:
+  postgresPassword: ""
+  secretKey: ""
+
+ingress:
+  enabled: true
+
+postgres:
+  persistence:
+    size: 5Gi
+
+user:
+  replicaCount: 2
+  image:
+    tag: latest
+    pullPolicy: Always
+  resources:
+    requests: { cpu: 200m, memory: 128Mi }
+    limits: { cpu: 500m, memory: 256Mi }
+
+payment:
+  replicaCount: 2
+  image:
+    tag: latest
+    pullPolicy: Always
+  resources:
+    requests: { cpu: 200m, memory: 128Mi }
+    limits: { cpu: 500m, memory: 256Mi }
+
+gateway:
+  replicaCount: 3
+  image:
+    tag: latest
+    pullPolicy: Always
+  resources:
+    requests: { cpu: 200m, memory: 128Mi }
+    limits: { cpu: 500m, memory: 256Mi }

@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "microservices.fullname" . }}-pre-upgrade
+  labels:
+    {{- include "microservices.labels" . | nindent 4 }}
+    app.kubernetes.io/component: pre-upgrade
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        {{- include "microservices.labels" . | nindent 8 }}
+        app.kubernetes.io/component: pre-upgrade
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: check-db
+          image: busybox:1.36
+          command: ["sh", "-c"]
+          args:
+            - >-
+              echo "pre-upgrade: checking PostgreSQL before upgrade" &&
+              nc -z -w 5 {{ include "microservices.fullname" . }}-postgres {{ .Values.postgres.service.port }} &&
+              echo "pre-upgrade: PostgreSQL is reachable"

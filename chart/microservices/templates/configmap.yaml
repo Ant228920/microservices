@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "microservices.fullname" . }}-config
+  labels:
+    {{- include "microservices.labels" . | nindent 4 }}
+data:
+  RABBITMQ_HOST: {{ include "microservices.fullname" . }}-rabbitmq
+  RABBITMQ_PORT: {{ .Values.rabbitmq.service.amqpPort | quote }}
+  RABBITMQ_QUEUE: {{ .Values.config.rabbitmqQueue | quote }}
+  USER_SERVICE_URL: {{ printf "http://%s-user:%v" (include "microservices.fullname" .) .Values.user.service.port | quote }}
+  PAYMENT_SERVICE_URL: {{ printf "http://%s-payment:%v" (include "microservices.fullname" .) .Values.payment.service.port | quote }}
