@@ -1,4 +1,3 @@
-import asyncio
 from typing import Any
 
 import httpx
@@ -14,7 +13,7 @@ async def safe_get(client: httpx.AsyncClient, url: str) -> dict | None:
         response = await client.get(url, timeout=settings.HTTP_TIMEOUT)
         response.raise_for_status()
         return response.json()
-    except (httpx.HTTPStatusError, httpx.RequestError, asyncio.TimeoutError):
+    except (TimeoutError, httpx.HTTPStatusError, httpx.RequestError):
         return None
 
 
