@@ -1,0 +1,71 @@
+config:
+  rabbitmqQueue: main_queue
+
+# Лише dev-заглушки. Для prod значення передаються через --set (див. README).
+secret:
+  postgresPassword: postgres
+  secretKey: dev-only-secret-key
+
+ingress:
+  enabled: false
+  className: ""
+  host: ""
+
+postgres:
+  image:
+    repository: postgres
+    tag: 15-alpine
+  database: lab_db
+  user: postgres
+  service:
+    port: 5432
+  persistence:
+    enabled: true
+    size: 1Gi
+
+rabbitmq:
+  image:
+    repository: rabbitmq
+    tag: 3-management-alpine
+  service:
+    amqpPort: 5672
+    managementPort: 15672
+
+user:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/ant228920/microservices-user_service
+    tag: sha-865266f
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8000
+  resources:
+    requests: { cpu: 100m, memory: 64Mi }
+    limits: { cpu: 250m, memory: 128Mi }
+
+payment:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/ant228920/microservices-payment_service
+    tag: sha-865266f
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8000
+  resources:
+    requests: { cpu: 100m, memory: 64Mi }
+    limits: { cpu: 250m, memory: 128Mi }
+
+gateway:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/ant228920/microservices-gateway_service
+    tag: sha-865266f
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8000
+  resources:
+    requests: { cpu: 100m, memory: 64Mi }
+    limits: { cpu: 250m, memory: 128Mi }
