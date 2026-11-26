@@ -1,3 +1,5 @@
+import os
+
 import uvicorn
 from core.config import settings
 from core.metrics import metrics_endpoint
@@ -27,6 +29,10 @@ app = FastAPI(
         }
     },
 )
+
+@app.get("/version", tags=["Health"])
+async def version():
+    return {"version": os.getenv("APP_VERSION", "dev")}
 
 def custom_openapi():
     if app.openapi_schema:
