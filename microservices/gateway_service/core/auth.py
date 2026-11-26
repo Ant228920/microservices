@@ -1,10 +1,9 @@
+import os
 from datetime import datetime, timedelta
 
 from fastapi import HTTPException, Request
 from fastapi.security import HTTPBearer
 from jose import JWTError, jwt
-
-import os
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-secret-key")
 ALGORITHM = "HS256"

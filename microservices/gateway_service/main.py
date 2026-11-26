@@ -1,3 +1,5 @@
+import os
+
 import uvicorn
 from core.config import settings
 from core.metrics import metrics_endpoint
@@ -9,7 +11,6 @@ from fastapi.security import HTTPBearer
 from modules.auth.api.routes import router as auth_router
 from modules.gateway.api.routes import router as gateway_router
 from modules.proxy.api.routes import router as proxy_router
-import os
 
 security = HTTPBearer()
 
