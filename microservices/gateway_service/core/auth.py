@@ -4,7 +4,9 @@ from fastapi import HTTPException, Request
 from fastapi.security import HTTPBearer
 from jose import JWTError, jwt
 
-SECRET_KEY = "super-secret-key-change-in-production"
+import os
+
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-secret-key")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
@@ -19,6 +21,7 @@ PUBLIC_PATHS = {
     "/api/v1/auth/login",
     "/api/v1/auth/register",
     "/metrics",
+    "/version",
 }
 
 

@@ -9,6 +9,7 @@ from fastapi.security import HTTPBearer
 from modules.auth.api.routes import router as auth_router
 from modules.gateway.api.routes import router as gateway_router
 from modules.proxy.api.routes import router as proxy_router
+import os
 
 security = HTTPBearer()
 
@@ -27,6 +28,10 @@ app = FastAPI(
         }
     },
 )
+
+@app.get("/version", tags=["Health"])
+async def version():
+    return {"version": os.getenv("APP_VERSION", "dev")}
 
 def custom_openapi():
     if app.openapi_schema:
